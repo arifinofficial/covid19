@@ -2,6 +2,7 @@
 <div>
     <LineChart
         :chart-data="dataCollection"
+        :options="options"
     ></LineChart>
 </div>
 </template>
@@ -20,6 +21,16 @@ export default {
         time: null,
         death: null,
         recovered: null,
+        options: {
+            responsive: true,
+            scales: {
+            yAxes: [{
+                ticks: {
+                    stepSize: 150
+                }
+            }]
+    }
+        }
     }),
     mounted(){
         this.fillData()
@@ -67,7 +78,7 @@ export default {
                 formatDateChart.push(formatDate);
                 formatDeathChart.push(val.total_deaths);
                 formatRecoveredChart.push(val.total_recovered);
-                formatCaseChart.push(val.total_cases);
+                formatCaseChart.push(val.total_cases.replace(',', ''));
             });
 
             this.time = formatDateChart;
@@ -106,28 +117,15 @@ export default {
                     },
                     {
                         label: 'Kasus',
-                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                        borderColor: 'blue',
-                        pointBackgroundColor: 'blue',
+                        backgroundColor: 'rgba(255, 222, 103, 0.61)',
+                        borderColor: 'orange',
+                        pointBackgroundColor: 'orange',
                         borderWidth: 1,
                         pointBorderColor: 'white',
                         data: this.case,
                     },
                 ]
             }
-        },
-        tt(){
-            let tmpData = [];
-
-            this.dataForChart.forEach((val) => {
-                let date = new Date(val.record_date.split(' ')[0]);
-                let day = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(date);
-                let month = new Intl.DateTimeFormat('en', {month: 'short'}).format(date);
-                let formatDate = day + ' ' + month;
-                tmpData.push(formatDate);
-            });
-
-            this.test = tmpData;
         }
     },
     computed: {
